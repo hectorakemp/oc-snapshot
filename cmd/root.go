@@ -6,21 +6,21 @@ package cmd
 
 import (
 	"os"
-	"os/exec"
+	// "os/exec"
 	// "os/exec"
 
 	"github.com/spf13/cobra"
-	configv1 "github.com/openshift/api/config/v1"
-	routev1 "github.com/openshift/api/route/v1"
-	appsv1 "k8s.io/api/apps/v1"
-	batchv1 "k8s.io/api/batch/v1"
-	corev1 "k8s.io/api/core/v1"
+	// configv1 "github.com/openshift/api/config/v1"
+	// routev1 "github.com/openshift/api/route/v1"
+	// appsv1 "k8s.io/api/apps/v1"
+	// batchv1 "k8s.io/api/batch/v1"
+	// corev1 "k8s.io/api/core/v1"
 	// velerov1 "github.com/heptio/velero/pkg/apis/velero/v1"
 	// oappsv1 "github.com/openshift/api/apps/v1"
 	// orbacv1 "github.com/openshift/api/authorization/v1"
 	// oconfigv1 "github.com/openshift/api/config/v1"
 	// machineapi "github.com/openshift/api/machine/v1beta1"
-	ingresscontroller "github.com/openshift/api/operator/v1"
+	// ingresscontroller "github.com/openshift/api/operator/v1"
 	// autoscalingv1 "github.com/openshift/cluster-autoscaler-operator/pkg/apis/autoscaling/v1"
 	// autoscalingv1beta1 "github.com/openshift/cluster-autoscaler-operator/pkg/apis/autoscaling/v1beta1"
 	// "github.com/openshift/hive/apis"
@@ -36,8 +36,8 @@ import (
 	// hivev1 "github.com/openshift/hive/apis/hive/v1"
 	// hivecontractsv1alpha1 "github.com/openshift/hive/apis/hivecontracts/v1alpha1"
 	// hiveintv1alpha1 "github.com/openshift/hive/apis/hiveinternal/v1alpha1"
-	admissionregistrationv1 "k8s.io/api/admissionregistration/v1"
-	"k8s.io/apimachinery/pkg/runtime"
+	// admissionregistrationv1 "k8s.io/api/admissionregistration/v1"
+	// "k8s.io/apimachinery/pkg/runtime"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -55,9 +55,6 @@ to quickly create a Cobra application.`,
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
-type SwaggerDocable interface {
-	SwaggerDoc() map[string]string
-}
 
 type ApiResourceKnownNamespaces struct {
 	apiResource     SwaggerDocable
@@ -65,26 +62,12 @@ type ApiResourceKnownNamespaces struct {
 	knownNamespaces []string
 }
 
-var AllApiResourcesKnownNamespaces = []ApiResourceKnownNamespaces{
-	{
-		apiResource: corev1.Binding{},
-	},
-	{
-		apiResource: corev1.ComponentStatus{},
-	},
-	{
-		apiResource: corev1.ConfigMap{},
-	},
-	{
-		apiResource: corev1.Endpoints{},
-	},
-	{
-		apiResource: ingresscontroller.ServiceCA{},
-	},
-}
-
 // var ApiResourcesKnownNamespaces = map[string]string{
 // }
+
+var (
+	namespace string
+)
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
@@ -93,11 +76,7 @@ func Execute() {
 	if err != nil {
 		os.Exit(1)
 	}
-	// output, err := exec.Command("bash", "-c", "oc api-resources")
-	// add all api resources to api scheme
-	// known namespaces
-	// make a map?
-	// log into cluster
+	// fetch namespace
 }
 
 func init() {
@@ -109,5 +88,5 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("all-namespaces", "A", false, "Diff all namespaces")
+	rootCmd.Flags().StringVarP(&namespace, "--namespace", "-n", "", "Diff a namespace.")
 }
